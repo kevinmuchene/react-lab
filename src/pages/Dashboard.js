@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PostDetails from "../components/PostDetails/PostDetails";
 import Posts from "../components/Posts/Posts";
 
@@ -14,6 +14,14 @@ function Dashboard() {
   const [postData, setPostData] = useState(postDataDummy);
 
   const [postDetails, setPostDetails] = useState("");
+
+  useEffect(() => {
+    async function fetchData() {
+      let data = await fetch("http://localhost:8080/api/v1/posts");
+      console.log(data.json());
+    }
+    fetchData();
+  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
