@@ -1,16 +1,24 @@
 import React from "react";
 
 function PostDetails(props) {
-  //   console.log(props.postDetails[0].id);
-  console.log(props.postDetails);
-  //   console.log(props.postDetails[0].title);
   return (
     <div>
-      <h2>MIU</h2>
-      {/* <h4>Name: {props.postDetails == {} ? "" : props.postDetails[0].title}</h4> */}
-      {/* <h5>Author: {props.postDetails[0].author}</h5> */}
+      {props.postDetails.length > 0 && (
+        <>
+          <h1>{props.postDetails[0].title}</h1>
+          <h3>{props.postDetails[0].author}</h3>
+          <p>
+            This is the content in the post: by {props.postDetails[0].author}
+          </p>
+
+          <div>
+            <button>Edit</button>
+            <button>Delete</button>
+          </div>
+        </>
+      )}
     </div>
   );
 }
 
-export default PostDetails;
+export default React.memo(PostDetails);
