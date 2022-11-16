@@ -1,10 +1,9 @@
 import React from "react";
 
 function Post(props) {
-  //   console.log(props.data);
   return (
     <div
-      style={{ border: "2px blue groove", margin: "1.5em" }}
+      style={{ margin: "1.5em" }}
       onClick={() => props.fetchPostIdWhenClicked(props.id)}
     >
       <p>Id : {props.id}</p>
