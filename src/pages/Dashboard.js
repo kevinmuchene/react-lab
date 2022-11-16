@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import PostDetails from "../components/PostDetails";
-import Posts from "../components/Posts";
+import PostDetails from "../components/PostDetails/PostDetails";
+import Posts from "../components/Posts/Posts";
 
 const postDataDummy = [
   { id: 111, title: "Happiness", author: "John" },
@@ -17,8 +17,6 @@ function Dashboard() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    console.log(event);
 
     const copy = [...postData];
 
