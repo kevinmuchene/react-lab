@@ -9,9 +9,17 @@ function AddPost(props) {
     content: "",
   });
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    // const name = e.target.name;
+    // const value = e.target.value;
+    setFormData((prev) => {
+      return { ...prev, [name]: value };
+    });
+  };
+
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(formData);
     props.addPost(formData);
   }
 
@@ -23,23 +31,18 @@ function AddPost(props) {
           <label>Title: </label>
           <input
             type="text"
+            name="title"
             value={formData.title}
-            onChange={(event) => {
-              formData.title = event.target.value;
-              setFormData({ ...formData });
-            }}
+            onChange={handleChange}
           />
         </div>
 
         <div className="div-form">
           <label>Content: </label>
-          <input
-            type="text"
+          <textarea
+            name="content"
             value={formData.content}
-            onChange={(event) => {
-              formData.content = event.target.value;
-              setFormData({ ...formData });
-            }}
+            onChange={handleChange}
           />
         </div>
 
@@ -47,11 +50,9 @@ function AddPost(props) {
           <label>Author: </label>
           <input
             type="text"
+            name="author"
             value={formData.author}
-            onChange={(event) => {
-              formData.author = event.target.value;
-              setFormData({ ...formData });
-            }}
+            onChange={handleChange}
           />
         </div>
 
