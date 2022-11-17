@@ -1,27 +1,31 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
+import AddPost from "../components/AddPost/AddPost";
 import PostDetails from "../components/PostDetails/PostDetails";
 import Posts from "../components/Posts/Posts";
-
-const postDataDummy = [
-  { id: 111, title: "Happiness", author: "John" },
-  { id: 112, title: "MIU", author: "Dean" },
-  { id: 113, title: "Enjoy Life", author: "Jasmine" },
-];
 
 function Dashboard() {
   const [title, setTitle] = useState("");
 
-  const [postData, setPostData] = useState(postDataDummy);
+  const [postData, setPostData] = useState([]);
 
   const [postDetails, setPostDetails] = useState("");
 
+  const [postId, setPostId] = useState(0);
+
+  const [trackDeleteBtn, setTrackDeleteBtn] = useState(false);
+
+  const [newPostFormData, setNewPostFormData] = useState({});
+
   useEffect(() => {
-    async function fetchData() {
-      let data = await fetch("http://localhost:8080/api/v1/posts");
-      console.log(data.json());
+    function fetchData() {
+      axios
+        .get("http://localhost:8080/api/v1/posts")
+        .then((response) => setPostData(response.data))
+        .catch(new Error());
     }
     fetchData();
-  }, []);
+  }, [trackDeleteBtn]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -35,12 +39,25 @@ function Dashboard() {
   };
 
   const fetchPostIdWhenClicked = (id) => {
-    // console.log(id);
-
     let details = postData.filter((post) => post.id === id);
-
+    setPostId(id);
     setPostDetails(details);
   };
+
+  function deletePostById() {
+    axios.delete(`http://localhost:8080/api/v1/posts/${postId}`).then(() => {
+      setTrackDeleteBtn(!trackDeleteBtn);
+      setPostDetails([]);
+    });
+  }
+
+  function addPost(post) {
+    console.log(post);
+    // axios.post(`localhost:8080/api/v1/users/${id}/posts`)
+    axios
+      .post(`http://localhost:8080/api/v1/users/1/posts`, post)
+      .then(() => setTrackDeleteBtn(!trackDeleteBtn));
+  }
 
   return (
     <div>
@@ -56,7 +73,15 @@ function Dashboard() {
       </form>
 
       <div>
-        <PostDetails postDetails={postDetails} />
+        <PostDetails
+          postDetails={postDetails}
+          deletePostById={deletePostById}
+        />
+      </div>
+
+      <div>
+        {/* <AddPost setNewPostFormData={setNewPostFormData} addPost={addPost} /> */}
+        <AddPost addPost={addPost} />
       </div>
     </div>
   );
