@@ -1,9 +1,10 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import AddPost from "../components/AddPost/AddPost";
 import PostDetails from "../components/PostDetails/PostDetails";
 import Posts from "../components/Posts/Posts";
 
+export const FetchPostContext = React.createContext();
 function Dashboard() {
   const [title, setTitle] = useState("");
 
@@ -15,7 +16,7 @@ function Dashboard() {
 
   const [trackDeleteBtn, setTrackDeleteBtn] = useState(false);
 
-  const [newPostFormData, setNewPostFormData] = useState({});
+  const titleForm = useRef();
 
   useEffect(() => {
     function fetchData() {
@@ -30,9 +31,15 @@ function Dashboard() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
+    const form = titleForm.current;
+
+    const dataForm = {
+      title: form["title"].value,
+    };
+
     const copy = [...postData];
 
-    copy[0].title = title === "" ? "Happiness" : title;
+    copy[0].title = dataForm.title === "" ? "Happiness" : dataForm.title;
 
     setPostData(copy);
     setTitle("");
@@ -52,23 +59,19 @@ function Dashboard() {
   }
 
   function addPost(post) {
-    console.log(post);
-    // axios.post(`localhost:8080/api/v1/users/${id}/posts`)
+    // axios.post(`localhost:8080/api/v1/users/${id}/posts`);
     axios
       .post(`http://localhost:8080/api/v1/users/1/posts`, post)
       .then(() => setTrackDeleteBtn(!trackDeleteBtn));
   }
 
   return (
-    <div>
-      <Posts data={postData} fetchPostIdWhenClicked={fetchPostIdWhenClicked} />
+    // <div>
+    <FetchPostContext.Provider value={fetchPostIdWhenClicked}>
+      <Posts data={postData} />
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={title}
-          onChange={(event) => setTitle(event.target.value)}
-        />
+      <form ref={titleForm} onSubmit={handleSubmit}>
+        <input type="text" label={"title"} name={"title"} />
         <button>Change Name</button>
       </form>
 
@@ -80,10 +83,9 @@ function Dashboard() {
       </div>
 
       <div>
-        {/* <AddPost setNewPostFormData={setNewPostFormData} addPost={addPost} /> */}
         <AddPost addPost={addPost} />
       </div>
-    </div>
+    </FetchPostContext.Provider>
   );
 }
 
