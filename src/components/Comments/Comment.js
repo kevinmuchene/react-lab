@@ -1,8 +1,6 @@
 import React from "react";
 
 function Comment(props) {
-  console.log(props.comments[0]);
-  // return <div>{props.comments}</div>;
   return (
     <div>
       {props.comments.length > 0 && (
@@ -15,8 +13,6 @@ function Comment(props) {
       )}
     </div>
   );
-
-  // </div>;
 }
 
 export default Comment;
