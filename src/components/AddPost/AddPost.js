@@ -1,59 +1,39 @@
-import React, { useState } from "react";
-
+import React, { useRef } from "react";
 import "./addPost.css";
 
 function AddPost(props) {
-  const [formData, setFormData] = useState({
-    author: "",
-    title: "",
-    content: "",
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    // const name = e.target.name;
-    // const value = e.target.value;
-    setFormData((prev) => {
-      return { ...prev, [name]: value };
-    });
-  };
+  const addPostFormRef = useRef();
 
   function handleSubmit(event) {
     event.preventDefault();
-    props.addPost(formData);
+
+    let formData = addPostFormRef.current;
+
+    let newData = {
+      author: formData["author"].value,
+      title: formData["title"].value,
+      content: formData["content"].value,
+    };
+    props.addPost(newData);
   }
 
   return (
     <div>
       <h2>ADD POST</h2>
-      <form onSubmit={handleSubmit}>
+      <form ref={addPostFormRef} onSubmit={handleSubmit}>
         <div className="div-form">
           <label>Title: </label>
-          <input
-            type="text"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-          />
+          <input type="text" name={"title"} />
         </div>
 
         <div className="div-form">
           <label>Content: </label>
-          <textarea
-            name="content"
-            value={formData.content}
-            onChange={handleChange}
-          />
+          <textarea name={"content"} />
         </div>
 
         <div className="div-form">
           <label>Author: </label>
-          <input
-            type="text"
-            name="author"
-            value={formData.author}
-            onChange={handleChange}
-          />
+          <input type="text" name={"author"} />
         </div>
 
         <div className="div-form">
