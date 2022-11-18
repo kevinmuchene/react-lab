@@ -2,7 +2,6 @@ import React from "react";
 import Comment from "../Comments/Comment";
 
 function PostDetails(props) {
-  console.log(props.postDetails);
   return (
     <div>
       {props.postDetails.length > 0 && (
@@ -14,7 +13,7 @@ function PostDetails(props) {
           </p>
 
           <div>
-            <Comment comments={props.postDetails[0].comments} />
+            {/* <Comment comments={props.postDetails[0].comments} /> */}
           </div>
 
           <div>
